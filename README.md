@@ -1,2 +1,0 @@
-# criptoMonitor
-Cryptocurrencies Monitor
