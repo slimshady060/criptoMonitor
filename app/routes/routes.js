@@ -1,6 +1,6 @@
 const { signIn, signUp } = require('../controllers/user');
 
-exports.init = (app) => {
+exports.initRouters = (app) => {
   app.get('/', (req, resp) => {
     resp.send({ statusCode: 200, msj: 'Welcome to app' });
   });

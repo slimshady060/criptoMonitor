@@ -11,7 +11,7 @@ const initServer = () => {
   const { port } = config.api;
   Promise.resolve()
     .then(() => {
-      routes.init(app);
+      routes.initRouters(app);
       app.use(errors.handle);
       app.listen(port);
       console.info(`Listening on port: ${port}`);
