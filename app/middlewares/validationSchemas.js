@@ -7,11 +7,12 @@ const lengthError = (field, typeLength, length) => `${field} must be ${typeLengt
 
 const loginSchema = yup.object().shape({
   body: yup.object().shape({
-    userName:
+    username:
       yup.string()
-        .required(error.badRequest(bodyError('userName'))),
+        .required(error.badRequest(bodyError('username'))),
     password:
-      yup.string()
+      yup.string(error.badRequest('password must be string'))
+        .strict(true)
         .required(error.badRequest(bodyError('password'))),
   }),
 });
@@ -32,7 +33,8 @@ const userSchema = yup.object().shape({
           .required(error.badRequest(bodyError('username'))),
     password:
         yup.string()
-          .max(200, error.badRequest(lengthError('password', 'maximum', 200)))
+          .strict(true)
+          .max(50, error.badRequest(lengthError('password', 'maximum', 50)))
           .required(error.badRequest(bodyError('password'))),
     currency:
         yup.string()

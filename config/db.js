@@ -7,6 +7,7 @@ module.exports = {
   database: config.database.database,
   host: config.database.host,
   dialect: config.database.dialect,
+  logging: false,
   // config seeds
   seederStorage: 'sequelize',
   seederStorageTableName: 'seeds',
