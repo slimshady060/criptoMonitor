@@ -6,27 +6,41 @@ const {
   DATABASE_ERROR,
 } = require('./constants');
 
-exports.notFound = (message) => ({
+const notFound = (message) => ({
   internalCode: NOT_FOUND,
   message,
 });
 
-exports.defaultError = (message) => ({
+const defaultError = (message) => ({
   internalCode: DEFAULT_ERROR,
   message,
 });
 
-exports.badRequest = (message) => ({
+const badRequest = (message) => ({
   internalCode: BAD_REQUEST,
   message,
 });
 
-exports.unauthorized = (message) => ({
+const unauthorized = (message) => ({
   internalCode: UNAUTHORIZED,
   message,
 });
 
-exports.unauthorized = (message) => ({
+const databaseError = (message) => ({
   internalCode: DATABASE_ERROR,
   message,
 });
+
+const userAlreadyExists = databaseError('User already exists');
+
+const userUnauthorized = unauthorized('User is not authorized');
+
+module.exports = {
+  notFound,
+  defaultError,
+  badRequest,
+  unauthorized,
+  databaseError,
+  userUnauthorized,
+  userAlreadyExists,
+};

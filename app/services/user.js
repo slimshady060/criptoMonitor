@@ -1,13 +1,27 @@
 const jwt = require('../utils/auth');
 const config = require('../../config/index');
-const User = require('../models').user;
-const errorHandler = require('../utils/errors/errors_handler');
+const { User } = require('../models');
 
-exports.generateToken = (userInfo) => jwt.sign({
-  user: userInfo,
-}, config.auth.jwtSecret, { expiresIn: config.auth.jwtExprired });
+const generateToken = (user) => jwt.sign(
+  { user },
+  config.auth.jwtSecret,
+  { expiresIn: config.auth.jwtExprired },
+);
 
-exports.findOne = (filters) => {
-  const condition = { where: filters };
-  return User.findOne(condition).catch(errorHandler.errorDatabase);
+const findByUserName = (userName) => User.findOne({
+  where: { username: userName },
+});
+
+const createUser = (userInfo) => User.create({
+  name: userInfo.name,
+  lastName: userInfo.lastName,
+  username: userInfo.username,
+  password: userInfo.password,
+  currency: userInfo.currency,
+});
+
+module.exports = {
+  findByUserName,
+  generateToken,
+  createUser,
 };

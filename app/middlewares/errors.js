@@ -4,6 +4,7 @@ const statusCodes = {
   BAD_REQUEST: 400,
   DATABASE_ERROR: 503,
   DEFAULT_ERROR: 500,
+  NOT_FOUND: 404,
 };
 
 exports.handle = (error, req, res, next) => {

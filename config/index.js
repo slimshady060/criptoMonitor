@@ -14,6 +14,9 @@ const config = {
   auth: {
     jwtSecret: process.env.JWT_SECRET,
     jwtExprired: process.env.JWT_EXP || '1d',
+    headerType: 'authorization',
+    algorithm: 'RSA256',
+    saltRounds: process.env.SALT_ROUNDS || 10,
   },
 };
 
