@@ -2,9 +2,9 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, type) => {
   class User extends Model {
-    // static associate(models) {
-    // models.Cripto.belongsToMany(models.Cripto, { through: 'Users_Criptos' });
-    // }
+    static associate(models) {
+      models.User.belongsToMany(models.Cripto, { through: 'Users_Criptos' });
+    }
   }
   User.init(
     {

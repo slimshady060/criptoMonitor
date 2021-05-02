@@ -1,12 +1,25 @@
 const { validate } = require('express-yup');
-const { signIn, signUp } = require('../controllers/user');
-const { loginSchema, userSchema } = require('../middlewares/validationSchemas');
+const userController = require('../controllers/user');
+const {
+  loginSchema,
+  newUserSchema,
+  addCriptoSchema,
+} = require('../middlewares/validationSchemas');
 const { validateUser, userExists } = require('../middlewares/user');
+const { getAllCriptos } = require('../controllers/cripto');
+const { requireToken, getUserFromToken } = require('../middlewares/auth');
+const { getCripto } = require('../middlewares/cripto');
 
 exports.initRouters = (app) => {
-  app.post('/api/login', [validate(loginSchema), validateUser], signIn);
-  app.post('/api/signup', [validate(userSchema), userExists], signUp);
-  app.get('/', (req, resp) => {
-    resp.send({ statusCode: 200, msj: 'Welcome to app' });
-  });
+  // user routes
+  app.post('/login', [validate(loginSchema), validateUser], userController.signIn);
+  app.post('/user/signup', [validate(newUserSchema), userExists], userController.signUp);
+  app.post(
+    '/user/addCripto',
+    [validate(addCriptoSchema), requireToken, getUserFromToken, getCripto],
+    userController.addCripto,
+  );
+
+  // coints routes
+  app.get('/cripto/list/:page', [requireToken], getAllCriptos);
 };

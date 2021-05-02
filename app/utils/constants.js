@@ -4,3 +4,4 @@ exports.NOT_FOUND = 'NOT_FOUND';
 exports.DATABASE_ERROR = 'DATABASE_ERROR';
 exports.DEFAULT_ERROR = 'DEFAULT_ERROR';
 exports.CURRENCIES_LIST = ['USD', 'EUR', 'ARS'];
+exports.LIMIT_PAGE = '100';

@@ -14,7 +14,7 @@ const defaultErrorMessage = (err) => {
   return 'Undefined error';
 };
 
-exports.notifyErrorDatabase = (e, additionalMessages = () => false) => {
+exports.errorDatabase = (e, additionalMessages = () => false) => {
   if (
     e instanceof Sequelize.ForeignKeyConstraintError
     || e instanceof Sequelize.UniqueConstraintError

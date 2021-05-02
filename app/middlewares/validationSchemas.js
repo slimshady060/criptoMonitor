@@ -17,7 +17,7 @@ const loginSchema = yup.object().shape({
   }),
 });
 
-const userSchema = yup.object().shape({
+const newUserSchema = yup.object().shape({
   body: yup.object().shape({
     name:
       yup.string()
@@ -44,7 +44,16 @@ const userSchema = yup.object().shape({
   }),
 });
 
+const addCriptoSchema = yup.object().shape({
+  body: yup.object().shape({
+    criptoId:
+      yup.string()
+        .required(error.badRequest(bodyError('criptoId'))),
+  }),
+});
+
 module.exports = {
   loginSchema,
-  userSchema,
+  newUserSchema,
+  addCriptoSchema,
 };

@@ -4,6 +4,9 @@ const config = {
   api: {
     port: process.env.PORT || 8080,
   },
+  externalUrl: {
+    coingecko: process.env.COIN_BASE_PATH,
+  },
   database: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASS,

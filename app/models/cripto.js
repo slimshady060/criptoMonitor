@@ -8,7 +8,7 @@ module.exports = (sequelize, type) => {
   }
   Cripto.init(
     {
-      idCripto: { type: type.STRING, allowNull: false, unique: true },
+      cId: { type: type.STRING, allowNull: false, unique: true },
       name: { type: type.STRING, allowNull: true },
       symbol: { type: type.STRING, allowNull: false },
     },

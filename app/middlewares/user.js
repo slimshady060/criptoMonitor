@@ -24,8 +24,9 @@ const validateUser = async (req, res, next) => {
 
 const userExists = async (req, res, next) => {
   try {
-    const user = findByUserName(req.body.username);
+    const user = await findByUserName(req.body.username);
     if (user) next(error.userAlreadyExists);
+    next();
   } catch (err) {
     next(err);
   }
