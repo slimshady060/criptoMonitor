@@ -1,5 +1,5 @@
 const coinService = require('../services/cripto');
-const { responseAllCoins } = require('../serializers/coins');
+const { responseAllCoins } = require('../serializers/cripto');
 
 const getAllCriptos = async (req, res, next) => {
   try {

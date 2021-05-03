@@ -20,7 +20,7 @@ const getCriptoByIdFromApi = (id) => rq({
   url: `${config.externalUrl.coingecko}/coins/${id}`,
   method: 'get',
   params: {
-    ocalization: false,
+    localization: false,
     tickers: false,
     market_data: true,
     community_data: false,

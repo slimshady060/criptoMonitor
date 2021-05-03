@@ -8,11 +8,17 @@ const statusCodes = {
 };
 
 exports.handle = (error, req, res, next) => {
-  if (error.internalCode) {
-    res.status(statusCodes[error.internalCode] || DEFAULT_STATUS_CODE);
+  let internalCode;
+  if (error.errors) {
+    internalCode = error.errors[0].internalCode;
+  } else {
+    internalCode = error.internalCode;
+  }
+  if (internalCode) {
+    res.status(statusCodes[internalCode] || DEFAULT_STATUS_CODE);
   } else {
     next(error);
     res.status(DEFAULT_STATUS_CODE);
   }
-  return res.send({ message: error.message, internal_code: error.internalCode });
+  return res.send({ message: error.message, internal_code: internalCode });
 };

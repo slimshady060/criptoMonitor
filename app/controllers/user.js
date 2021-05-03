@@ -35,3 +35,17 @@ exports.addCripto = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getCriptosTop = async (req, res, next) => {
+  try {
+    const userOptions = {
+      userId: req.user.id,
+      userCurrency: req.user.currency.toLowerCase(),
+      limit: req.query.limit,
+    };
+    const criptosTop = await userService.getCriptoTop(userOptions, req.query.order);
+    res.status(200).json({ criptosTop });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -1,6 +1,6 @@
 const yup = require('yup');
 const error = require('../utils/errors');
-const currenciesList = require('../utils/constants').CURRENCIES_LIST;
+const { CURRENCIES_LIST, ORDER_TYPES } = require('../utils/constants');
 
 const bodyError = (message) => `Body doesn't have ${message} field`;
 const lengthError = (field, typeLength, length) => `${field} must be ${typeLength} ${length} characters`;
@@ -39,7 +39,7 @@ const newUserSchema = yup.object().shape({
     currency:
         yup.string()
           .max(8, error.badRequest(lengthError('currency', 'maximum', 8)))
-          .oneOf(currenciesList, error.badRequest(`currency must be one of this list ${currenciesList}`))
+          .oneOf(CURRENCIES_LIST, error.badRequest(`currency must be one of this values: ${CURRENCIES_LIST}`))
           .required(error.badRequest(bodyError('currency'))),
   }),
 });
@@ -52,8 +52,21 @@ const addCriptoSchema = yup.object().shape({
   }),
 });
 
+const topSchema = yup.object().shape({
+  query: yup.object().shape({
+    limit: yup.number()
+      .min(1, error.badRequest('limit must be greater than or equal to 1'))
+      .max(25, error.badRequest('limit must be less than or equal to 25'))
+      .required(error.badRequest('limit is required in query params')),
+    order: yup.string()
+      .oneOf([ORDER_TYPES.ASC, ORDER_TYPES.DESC], error.badRequest(`limit must be one of this values: ${[ORDER_TYPES.ASC, ORDER_TYPES.DESC]}`))
+      .default(ORDER_TYPES.ASC),
+  }),
+});
+
 module.exports = {
   loginSchema,
   newUserSchema,
   addCriptoSchema,
+  topSchema,
 };
