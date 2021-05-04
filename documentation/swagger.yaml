@@ -1,0 +1,339 @@
+openapi: 3.0.0
+info:
+  title: Cryptocurrencies Monitor
+  description: Cripto currencies Api, wrapper of [CoinGecko](https://www.coingecko.com/en/api)
+  version: 0.1.9
+
+components:
+  schemas:
+     
+     uknowError:
+       type: object
+       properties:
+         internal_code:
+           type: string
+         message:
+           type: string
+
+     LoginReq:
+       type: object
+       properties:
+         username:
+           type: string
+         password:
+           type: string
+
+     LoginRes:
+       type: object
+       properties:
+         authToken:
+           type: string
+    
+     UserCreated:
+       type: object
+       properties:
+         message:
+           type: string
+
+     CreateUserReq:
+       type: object
+       properties:
+         name:
+           type: string
+         lastName:
+           type: string
+         username:
+           type: string
+         password:
+           type: string
+         currency:
+           type: string
+
+     AddCripto:
+       type: object
+       properties:
+         criptoId:
+           type: string
+    
+     TopListCriptosResp:
+       type: object
+       properties:
+         criptosTop:
+           type: array
+           items:
+             type: object
+             properties:
+              symbol:
+               type: string
+              name:
+               type: string
+              image:
+               type: string
+              lastUpdated:
+               type: string
+              prices:
+               type: object
+               properties:
+                usd:
+                 type: integer
+                eur:
+                 type: integer
+                ars:
+                  type: integer
+
+     ListAvailableCriptosResp:
+       type: object
+       properties:
+         data:
+           type: array
+           items:
+             type: object
+             properties:
+              id:
+               type: string
+              symbol:
+               type: string
+              currentPrice:
+               type: integer
+              name:
+               type: string
+              image:
+               type: string
+              lastUpdated:
+               type: string
+              
+  
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+servers:
+  - url: http://{basepath}:{port}/
+    variables:
+      basepath:
+        default: localhost
+        description: Customer ID assigned by the service provider
+      port:
+        default: '3000'
+
+paths:
+
+  /login:
+    post:
+      summary: authentication endpoint
+      tags: 
+        - authentication
+      description: authentication endpoint
+      responses:
+        '200':    # status code
+          description: A json with token information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginRes'
+        '500':
+          description: error information internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '404':
+          description: error information user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '400':
+          description: error information Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+      requestBody:
+         description: A json object
+         content:
+           aplication/json:
+             schema:
+               $ref: '#/components/schemas/LoginReq'
+
+  /user/signup:
+    post:
+      summary: Register user
+      tags:
+        - user
+      description: register user
+      responses:
+        '201':    # status code
+          description: user created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreated'
+        '400':
+          description: error information Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '503':
+          description: error information user already exists or Darabase Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '500':
+          description: error information Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+      requestBody:
+         description: A json object with message of operation
+         content:
+           aplication/json:
+             schema:
+               $ref: '#/components/schemas/CreateUserReq'
+  
+  /user/addCripto:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Add cripto to user
+      tags:
+        - user
+      description: add cripto to user
+      responses:
+        '201':    # status code
+          description: cripto added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreated'
+        '400':
+          description: error information Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '503':
+          description: error information Database Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '500':
+          description: error information Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '401':
+          description: error information Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+      requestBody:
+         description: A json object with message of operation
+         content:
+           aplication/json:
+             schema:
+               $ref: '#/components/schemas/AddCripto'
+    
+  /user/criptos/top:
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: order
+          schema:
+            type: string
+          required: false
+      summary: Get top list criptos by user
+      tags:
+        - user
+      description: Get top list criptos
+      responses:
+        '200':
+          description: array of objects with top criptos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopListCriptosResp'
+        '400':
+          description: error information Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '503':
+          description: error information Database Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '500':
+          description: error information Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '401':
+          description: error information Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+
+  /cripto/list/{page}:
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+      summary: Get list available criptos
+      tags:
+        - cripto
+      description: Get list available criptos
+      responses:
+        '200':
+          description: array of objects with list available criptos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAvailableCriptosResp'
+        '400':
+          description: error information Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '503':
+          description: error information Database Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '500':
+          description: error information Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'
+        '401':
+          description: error information Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/uknowError'

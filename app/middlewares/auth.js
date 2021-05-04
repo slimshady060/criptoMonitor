@@ -10,10 +10,10 @@ const requireToken = (req, _, next) => {
       req.user = jwt.verifyToken(token, jwtSecret);
       next();
     } catch (error) {
-      next(errors.badRequest('Invalid Token'));
+      next(errors.badRequest('Bad Token'));
     }
   } else {
-    next(errors.badRequest('Authorization not found'));
+    next(errors.unauthorized('User is not authorized'));
   }
 };
 
