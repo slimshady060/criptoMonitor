@@ -71,4 +71,5 @@ module.exports = {
   createUser,
   addCriptos,
   getCriptoTop,
+  getCriptosFromApi,
 };
