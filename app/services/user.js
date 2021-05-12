@@ -8,7 +8,6 @@ const criptoService = require('./cripto');
 const { mapCriptosTop } = require('../serializers/cripto');
 
 const getCriptosFromApi = async (criptosList = []) => {
-  try {
     if (criptosList.length > 0) {
       const allPromises = criptosList
         .map((cripto) => criptoService.getCriptoByIdFromApi(cripto.cId));
@@ -16,9 +15,6 @@ const getCriptosFromApi = async (criptosList = []) => {
       return criptosFound;
     }
     return [];
-  } catch (error) {
-    throw Error(error);
-  }
 };
 
 const sortCriptoTop = (values, currency, orderType) => {

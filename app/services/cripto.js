@@ -3,6 +3,7 @@ const config = require('../../config');
 const { LIMIT_PAGE } = require('../utils/constants');
 const { Cripto } = require('../models');
 const errHandler = require('../utils/errors/errors_handler');
+const { checkTypeError } = require('../utils/errors')
 
 // external api
 const getAllCriptosFromApi = (filter, page = 1) => rq({
@@ -14,7 +15,7 @@ const getAllCriptosFromApi = (filter, page = 1) => rq({
     per_page: LIMIT_PAGE,
     page,
   },
-});
+}).catch((error) => checkTypeError(error.response));
 
 const getCriptoByIdFromApi = (id) => rq({
   url: `${config.externalUrl.coingecko}/coins/${id}`,
@@ -27,7 +28,7 @@ const getCriptoByIdFromApi = (id) => rq({
     developer_data: false,
     sparkline: false,
   },
-});
+}).catch((error) => checkTypeError(error.response));
 
 // BD
 const getCriptoById = (id) => Cripto.findOne({

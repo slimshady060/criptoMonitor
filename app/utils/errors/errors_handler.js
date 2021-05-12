@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 
 const errors = require('../errors');
 
-const defaultErrorMessage = (err) => {
+
+const defaultErrorMessage = err => {
   if (err instanceof Sequelize.ForeignKeyConstraintError) {
     return 'Foreign Key Error';
   }
@@ -14,13 +15,13 @@ const defaultErrorMessage = (err) => {
   return 'Undefined error';
 };
 
-exports.errorDatabase = (e, additionalMessages = () => false) => {
+exports.errorDatabase = (err, additionalMessages = () => false) => {
   if (
-    e instanceof Sequelize.ForeignKeyConstraintError
-    || e instanceof Sequelize.UniqueConstraintError
+    err instanceof Sequelize.ForeignKeyConstraintError
+    || err instanceof Sequelize.UniqueConstraintError
   ) {
-    const message = additionalMessages(e);
-    return Promise.reject(errors.badRequest(message || defaultErrorMessage(e)));
+    const message = additionalMessages(err);
+    return Promise.reject(errors.databaseError(message || defaultErrorMessage(err)));
   }
   return Promise.reject(errors.defaultError('Database error'));
 };

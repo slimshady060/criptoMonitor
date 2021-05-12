@@ -4,6 +4,7 @@ const {
   loginSchema,
   newUserSchema,
   addCriptoSchema,
+  pageParam,
   topSchema,
 } = require('../middlewares/validationSchemas');
 const { validateUser, userExists } = require('../middlewares/user');
@@ -26,5 +27,5 @@ exports.initRouters = (app) => {
   app.get('/user/criptos/top', [validate(topSchema), requireToken, getUserFromToken], userController.getCriptosTop);
 
   // coints routes
-  app.get('/cripto/list/:page', [requireToken], getAllCriptos);
+  app.get('/cripto/list', [validate(pageParam), requireToken], getAllCriptos);
 };

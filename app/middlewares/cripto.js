@@ -19,7 +19,6 @@ const getCripto = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    if (error.response.status === 404) next(errors.notFound('Cripto not found'));
     next(error);
   }
 };

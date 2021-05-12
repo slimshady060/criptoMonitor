@@ -64,9 +64,17 @@ const topSchema = yup.object().shape({
   }),
 });
 
+const pageParam = yup.object().shape({
+  query: yup.object().shape({
+    page: yup.string()
+      .matches('^[0-9]', error.badRequest('page param must be a number'))
+  }),
+});
+
 module.exports = {
   loginSchema,
   newUserSchema,
   addCriptoSchema,
   topSchema,
+  pageParam,
 };
